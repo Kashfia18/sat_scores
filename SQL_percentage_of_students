@@ -3,19 +3,19 @@ WITH score_table AS (
   FROM tutorial.sat_scores),
   
   t5 AS(
-  SELECT school,count(*) AS total
+  SELECT school,count(*) AS total_no_of_students_scored_well
   FROM tutorial.sat_scores
   GROUP BY 1),
   
   t6 AS (
-  SELECT s.school, COUNT(s.*) AS no
+  SELECT s.school, COUNT(s.*) AS no_of_students_scored_well
   FROM score_table s
   JOIN t5
   ON s.school=t5.school
   WHERE s.total_sat_score>=1550
   GROUP BY 1)
 
-SELECT t5.school, CAST((t6.no)*100.0/t5.total AS DECIMAL(5,2)) As percentage
+SELECT t5.school, CAST((t6.no_of_students_scored_well)*100.0/t5.total_no_of_students_scored_well AS DECIMAL(5,2)) As percentage
 FROM t5
 JOIN t6
 ON t5.school=t6.school;
