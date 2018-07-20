@@ -1,0 +1,21 @@
+WITH score_table AS (
+  SELECT school, teacher, student_id, sat_writing+sat_verbal+sat_math AS total_sat_score, hrs_studied
+  FROM tutorial.sat_scores),
+  
+t2 AS (
+  SELECT student_id, school, teacher, COUNT(*) AS no_of_students_scored_well, AVG(total_sat_score), 
+  MAX(total_sat_score), MIN(total_sat_score)
+  FROM score_table
+  WHERE total_sat_score>=1550
+  GROUP BY 1,2,3
+  ORDER BY 1)
+
+SELECT t2.student_id, s.hrs_studied, sc.total_sat_score
+FROM t2
+JOIN tutorial.sat_scores s
+ON t2.student_id=s.student_id
+JOIN score_table sc
+ON sc.student_id=s.student_id
+ORDER BY 2 DESC;
+
+
