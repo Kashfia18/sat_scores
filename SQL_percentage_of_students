@@ -1,0 +1,23 @@
+WITH score_table AS (
+  SELECT school, teacher, student_id, sat_writing+sat_verbal+sat_math AS total_sat_score, hrs_studied
+  FROM tutorial.sat_scores),
+  
+  t5 AS(
+  SELECT school,count(*) AS total
+  FROM tutorial.sat_scores
+  GROUP BY 1),
+  
+  t6 AS (
+  SELECT s.school, COUNT(s.*) AS no
+  FROM score_table s
+  JOIN t5
+  ON s.school=t5.school
+  WHERE s.total_sat_score>=1550
+  GROUP BY 1)
+
+SELECT t5.school, CAST((t6.no)*100.0/t5.total AS DECIMAL(5,2)) As percentage
+FROM t5
+JOIN t6
+ON t5.school=t6.school;
+
+
