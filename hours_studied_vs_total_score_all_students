@@ -1,0 +1,9 @@
+WITH score_table AS (
+  SELECT school, teacher, student_id, sat_writing+sat_verbal+sat_math AS total_sat_score, hrs_studied
+  FROM tutorial.sat_scores)
+  
+SELECT s.student_id, s.hrs_studied, sc.total_sat_score
+FROM tutorial.sat_scores s
+JOIN score_table sc
+ON sc.student_id=s.student_id
+ORDER BY 2 DESC;
